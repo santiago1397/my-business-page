@@ -1,0 +1,168 @@
+{
+  "Metadata": {
+    "title": "Villahermosa Open Solutions F.P. — From prototype to production",
+    "description": "Custom software, enterprise web apps, voice agents, and RAG systems — designed, built, and deployed by one team."
+  },
+  "LocaleSwitcher": {
+    "label": "Language",
+    "en": "EN",
+    "es": "ES"
+  },
+  "Header": {
+    "home": "Home",
+    "navServices": "Services",
+    "navManifesto": "Manifesto",
+    "navFaq": "FAQ",
+    "yearBadge": "'26",
+    "startProject": "Start a project"
+  },
+  "Footer": {
+    "tagline": "From prototype to production. Web, 3D, agents, voice, RAG.",
+    "contact": "Contact",
+    "connect": "Connect",
+    "linkedin": "LinkedIn",
+    "email": "Email",
+    "copyright": "Villahermosa Open Solutions F.P. © 2026",
+    "founded": "Venezuelan-founded"
+  },
+  "SubmitDialog": {
+    "contact": "Contact",
+    "title": "How can we help?",
+    "subtitle": "Pick the path that fits — we'll reply within 48 hours.",
+    "startProject": "Start a project",
+    "startProjectDesc": "Tell us what you're building",
+    "askQuestion": "Ask a question",
+    "askQuestionDesc": "Scope, stack, timeline — anything"
+  },
+  "Hero": {
+    "headline": "From <accent>prototype</accent> to production.",
+    "subtitle": "Custom software, enterprise web apps, voice agents, and RAG systems — designed, built, and deployed by one team.",
+    "startProject": "Start a project",
+    "ourServices": "Our services"
+  },
+  "BrowserSequence": {
+    "titleBar": "villahermosa.dev",
+    "welcome": "Welcome to",
+    "brand": "Villahermosa.OS",
+    "teamFor": "the team for",
+    "andBuilders": "and builders tired of waiting on three <accent>vendors</accent>.",
+    "weAllShare": "We all share the same problem…",
+    "keepScrolling": "Keep scrolling",
+    "snakeText": "founders ::: teams ::: founders ::: teams",
+    "reduced": {
+      "brand": "Villahermosa.OS",
+      "tagline": "the team for founders and builders tired of waiting on three vendors."
+    }
+  },
+  "Scrolly": {
+    "phase1a": "Design, code, deployment —",
+    "phase1b": "three vendors, three timelines, three excuses.",
+    "phase2": "One team. Start to finish.",
+    "reducedFallback": "(Reduced motion: scroll animation disabled)"
+  },
+  "Features": {
+    "intro": [
+      {
+        "title": "One team, full stack",
+        "desc": "Web, 3D, agents, voice, RAG — all delivered by one team."
+      },
+      {
+        "title": "Built with AI at the core",
+        "desc": "Agents and RAG aren't add-ons. They're the product."
+      },
+      {
+        "title": "Deployed, not demoed",
+        "desc": "Every project ships to production with monitoring and handover."
+      }
+    ],
+    "blocks": [
+      {
+        "title": "Pixels that move. Sites that perform.",
+        "paragraphs": [
+          "Marketing sites, product pages, and interactive experiences built with Next.js, Three.js, and GSAP. The same stack the best sites on the internet are using — not a page builder, not a template.",
+          "We design and engineer together, so the motion serves the message instead of decorating it. Scroll-driven storytelling, real-time 3D, and pages that stay fast on the phones your customers actually use."
+        ],
+        "ctaLabel": "Start a project"
+      },
+      {
+        "title": "Dashboards, internal tools, and the SaaS in between.",
+        "paragraphs": [
+          "When your team outgrows spreadsheets and your customers outgrow your MVP, you need real software. We build it — auth, roles, billing, audit logs, the boring parts done right.",
+          "TypeScript end-to-end. Postgres or your database of choice. Deployed on infrastructure that scales without surprises, with monitoring you can actually read."
+        ],
+        "ctaLabel": "Start a project"
+      },
+      {
+        "title": "Software that does the work, not just shows the data.",
+        "paragraphs": [
+          "Agents that read your inbox, update your CRM, draft your reports, and hand off to humans only when it matters. Built on the latest models, orchestrated to run reliably in production.",
+          "Multi-agent systems where each agent has a clear job. Tool use, memory, evaluation, guardrails — engineered the same way we'd engineer any critical system, because that's what this is now."
+        ],
+        "ctaLabel": "Start a project"
+      },
+      {
+        "title": "Pick up the phone. Let the agent answer.",
+        "paragraphs": [
+          "Real phone numbers, real conversations. Reception, booking, qualification, support — handled by a voice agent that sounds human, knows your business, and routes to a person when it should.",
+          "Trained on your data. Connected to your tools. Available in the languages your customers speak. Twenty-four hours a day, without a queue."
+        ],
+        "ctaLabel": "Start a project"
+      },
+      {
+        "title": "Your documents, finally answering back.",
+        "paragraphs": [
+          "Contracts, manuals, tickets, wikis — everything your team already knows, made instantly searchable in plain language. Private to your business, grounded in your sources, with citations you can verify.",
+          "We handle the ingestion, the embeddings, the retrieval, the evaluation, and the deployment. You get an answer engine that actually knows what your company knows."
+        ],
+        "ctaLabel": "Start a project"
+      }
+    ]
+  },
+  "Testimonials": {
+    "heading": "How we work",
+    "cards": [
+      {
+        "name": "Production-first",
+        "quote": "We ship to production, not to demo day. On every project, deployment is part of the deliverable — not a phase you pay extra for."
+      },
+      {
+        "name": "Stack-agnostic",
+        "quote": "We work in your stack, not ours. If your team uses Python and Django, we don't rewrite it in our favorite framework to feel clever."
+      },
+      {
+        "name": "Engineered AI",
+        "quote": "AI is engineering, not magic. Agents, RAG, and voice are systems with tests, evaluations, and SLAs. We build them that way."
+      },
+      {
+        "name": "Full ownership",
+        "quote": "One team. One contract. One throat to choke. Design, build, deploy, operate — no subcontractor chains, no finger-pointing."
+      }
+    ]
+  },
+  "FAQ": {
+    "heading": "Answers",
+    "items": [
+      {
+        "q": "How much does a project cost?",
+        "a": "Projects start around $2,000 for a focused landing site or 3D experience. Full web applications, AI agents, voice systems, and RAG platforms typically range from $7,500 to $30,000, depending on scope and integrations. We work lean — small senior team, AI-assisted, no agency overhead — so the price is what it is. We send a fixed-price quote after a free 30-minute discovery call."
+      },
+      {
+        "q": "How long does it take?",
+        "a": "Landing sites and small 3D experiences: under a week. Web applications and agent systems: 2–4 weeks. Larger enterprise builds and RAG platforms: 1–2 months. We agree on the timeline before we start, and we don't move the goalposts."
+      },
+      {
+        "q": "Who owns the code and the IP?",
+        "a": "You do. From day one. We transfer the repository, the deployment, and every credential the moment the project ships. No licensing traps, no hostage hosting. If you ever want to take it in-house or hand it to another team, you can."
+      },
+      {
+        "q": "What happens after launch?",
+        "a": "Launch isn't the end of the contract. We offer optional support plans for monitoring, updates, and improvements. If you'd rather take it in-house, we'll do a proper handover with documentation, runbooks, and a 30-day grace window for questions."
+      }
+    ]
+  },
+  "FinalCTA": {
+    "headline": "From <accent>prototype</accent> to production.\nWe start tomorrow.",
+    "subtitle": "Tell us what you're building. We'll send a quote in 48 hours.",
+    "startProject": "Start a project"
+  }
+}

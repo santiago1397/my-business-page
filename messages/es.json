@@ -1,0 +1,168 @@
+{
+  "Metadata": {
+    "title": "Villahermosa Open Solutions F.P. — Del prototipo a producción",
+    "description": "Software a medida, aplicaciones web empresariales, agentes de voz y sistemas RAG: diseñados, construidos y desplegados por un solo equipo."
+  },
+  "LocaleSwitcher": {
+    "label": "Idioma",
+    "en": "EN",
+    "es": "ES"
+  },
+  "Header": {
+    "home": "Inicio",
+    "navServices": "Servicios",
+    "navManifesto": "Manifiesto",
+    "navFaq": "FAQ",
+    "yearBadge": "'26",
+    "startProject": "Iniciar un proyecto"
+  },
+  "Footer": {
+    "tagline": "Del prototipo a producción. Web, 3D, agentes, voz, RAG.",
+    "contact": "Contacto",
+    "connect": "Conectar",
+    "linkedin": "LinkedIn",
+    "email": "Correo",
+    "copyright": "Villahermosa Open Solutions F.P. © 2026",
+    "founded": "Fundado en Venezuela"
+  },
+  "SubmitDialog": {
+    "contact": "Contacto",
+    "title": "¿Cómo podemos ayudar?",
+    "subtitle": "Elige el camino que mejor se ajuste — respondemos en 48 horas.",
+    "startProject": "Iniciar un proyecto",
+    "startProjectDesc": "Cuéntanos qué estás construyendo",
+    "askQuestion": "Hacer una pregunta",
+    "askQuestionDesc": "Alcance, stack, plazos — lo que sea"
+  },
+  "Hero": {
+    "headline": "Del <accent>prototipo</accent> a producción.",
+    "subtitle": "Software a medida, aplicaciones web empresariales, agentes de voz y sistemas RAG: diseñados, construidos y desplegados por un solo equipo.",
+    "startProject": "Iniciar un proyecto",
+    "ourServices": "Nuestros servicios"
+  },
+  "BrowserSequence": {
+    "titleBar": "villahermosa.dev",
+    "welcome": "Bienvenido a",
+    "brand": "Villahermosa.OS",
+    "teamFor": "el equipo para",
+    "andBuilders": "y constructores cansados de esperar a tres <accent>proveedores</accent>.",
+    "weAllShare": "Todos compartimos el mismo problema…",
+    "keepScrolling": "Sigue desplazándote",
+    "snakeText": "fundadores ::: equipos ::: fundadores ::: equipos",
+    "reduced": {
+      "brand": "Villahermosa.OS",
+      "tagline": "el equipo para fundadores y constructores cansados de esperar a tres proveedores."
+    }
+  },
+  "Scrolly": {
+    "phase1a": "Diseño, código, despliegue —",
+    "phase1b": "tres proveedores, tres plazos, tres excusas.",
+    "phase2": "Un solo equipo. De principio a fin.",
+    "reducedFallback": "(Movimiento reducido: animación de scroll desactivada)"
+  },
+  "Features": {
+    "intro": [
+      {
+        "title": "Un equipo, full stack",
+        "desc": "Web, 3D, agentes, voz, RAG — todo entregado por un solo equipo."
+      },
+      {
+        "title": "Construido con IA en el centro",
+        "desc": "Los agentes y RAG no son añadidos. Son el producto."
+      },
+      {
+        "title": "Desplegado, no solo demostrado",
+        "desc": "Cada proyecto llega a producción con monitoreo y entrega."
+      }
+    ],
+    "blocks": [
+      {
+        "title": "Pixels que se mueven. Sitios que rinden.",
+        "paragraphs": [
+          "Sitios de marketing, páginas de producto y experiencias interactivas construidas con Next.js, Three.js y GSAP. El mismo stack que usan los mejores sitios de internet — no un page builder, no una plantilla.",
+          "Diseñamos e ingenieramos juntos, para que el movimiento sirva al mensaje en vez de decorarlo. Storytelling por scroll, 3D en tiempo real y páginas rápidas en los teléfonos que tus clientes realmente usan."
+        ],
+        "ctaLabel": "Iniciar un proyecto"
+      },
+      {
+        "title": "Dashboards, herramientas internas y el SaaS intermedio.",
+        "paragraphs": [
+          "Cuando tu equipo supera las hojas de cálculo y tus clientes superan tu MVP, necesitas software de verdad. Lo construimos — auth, roles, facturación, logs de auditoría, las partes aburridas bien hechas.",
+          "TypeScript de extremo a extremo. Postgres o la base de datos que prefieras. Desplegado en infraestructura que escala sin sorpresas, con monitoreo que realmente se puede leer."
+        ],
+        "ctaLabel": "Iniciar un proyecto"
+      },
+      {
+        "title": "Software que hace el trabajo, no solo muestra datos.",
+        "paragraphs": [
+          "Agentes que leen tu correo, actualizan tu CRM, redactan tus informes y pasan a humanos solo cuando importa. Construidos con los últimos modelos, orquestados para correr de forma fiable en producción.",
+          "Sistemas multi-agente donde cada agente tiene un trabajo claro. Uso de herramientas, memoria, evaluación, guardrails — diseñados igual que diseñaríamos cualquier sistema crítico, porque eso es lo que esto es ahora."
+        ],
+        "ctaLabel": "Iniciar un proyecto"
+      },
+      {
+        "title": "Contesta el teléfono. Que el agente responda.",
+        "paragraphs": [
+          "Números de teléfono reales, conversaciones reales. Recepción, reservas, calificación, soporte — atendido por un agente de voz que suena humano, conoce tu negocio y deriva a una persona cuando debe.",
+          "Entrenado con tus datos. Conectado a tus herramientas. Disponible en los idiomas que hablan tus clientes. Veinticuatro horas al día, sin colas."
+        ],
+        "ctaLabel": "Iniciar un proyecto"
+      },
+      {
+        "title": "Tus documentos, por fin, respondiendo.",
+        "paragraphs": [
+          "Contratos, manuales, tickets, wikis — todo lo que tu equipo ya sabe, hecho instantáneamente buscable en lenguaje natural. Privado para tu negocio, fundamentado en tus fuentes, con citas que puedes verificar.",
+          "Nos encargamos de la ingestión, los embeddings, la recuperación, la evaluación y el despliegue. Obtienes un motor de respuestas que realmente sabe lo que tu empresa sabe."
+        ],
+        "ctaLabel": "Iniciar un proyecto"
+      }
+    ]
+  },
+  "Testimonials": {
+    "heading": "Cómo trabajamos",
+    "cards": [
+      {
+        "name": "Producción primero",
+        "quote": "Enviamos a producción, no al día de la demo. En cada proyecto, el despliegue es parte del entregable — no una fase por la que pagas extra."
+      },
+      {
+        "name": "Agnósticos del stack",
+        "quote": "Trabajamos en tu stack, no en el nuestro. Si tu equipo usa Python y Django, no lo reescribimos en nuestro framework favorito por sentirnos ingeniosos."
+      },
+      {
+        "name": "IA ingenierada",
+        "quote": "La IA es ingeniería, no magia. Los agentes, RAG y voz son sistemas con tests, evaluaciones y SLAs. Los construimos así."
+      },
+      {
+        "name": "Propiedad total",
+        "quote": "Un equipo. Un contrato. Un único responsable. Diseño, construcción, despliegue, operación — sin cadenas de subcontratas, sin señalarse con el dedo."
+      }
+    ]
+  },
+  "FAQ": {
+    "heading": "Respuestas",
+    "items": [
+      {
+        "q": "¿Cuánto cuesta un proyecto?",
+        "a": "Los proyectos arrancan en torno a $2.000 para una landing o experiencia 3D enfocada. Aplicaciones web completas, agentes de IA, sistemas de voz y plataformas RAG suelen ir de $7.500 a $30.000, según alcance e integraciones. Trabajamos ligeros — equipo senior pequeño, asistido por IA, sin sobrecarga de agencia — así que el precio es el que es. Enviamos un presupuesto cerrado tras una llamada de descubrimiento gratuita de 30 minutos."
+      },
+      {
+        "q": "¿Cuánto tarda?",
+        "a": "Landings y experiencias 3D pequeñas: menos de una semana. Aplicaciones web y sistemas de agentes: 2–4 semanas. Construcciones enterprise más grandes y plataformas RAG: 1–2 meses. Acordamos el plazo antes de empezar, y no movemos los postes de la portería."
+      },
+      {
+        "q": "¿Quién es dueño del código y la IP?",
+        "a": "Tú. Desde el primer día. Te transferimos el repositorio, el despliegue y cada credencial en el momento en que el proyecto se entrega. Sin trampas de licencia, sin rehenes de hosting. Si algún día quieres llevarlo interno o pasárselo a otro equipo, puedes."
+      },
+      {
+        "q": "¿Qué pasa después del lanzamiento?",
+        "a": "El lanzamiento no es el final del contrato. Ofrecemos planes opcionales de soporte para monitoreo, actualizaciones y mejoras. Si prefieres llevarlo interno, haremos una entrega adecuada con documentación, runbooks y una ventana de gracia de 30 días para preguntas."
+      }
+    ]
+  },
+  "FinalCTA": {
+    "headline": "Del <accent>prototipo</accent> a producción.\nEmpezamos mañana.",
+    "subtitle": "Cuéntanos qué estás construyendo. Te enviamos un presupuesto en 48 horas.",
+    "startProject": "Iniciar un proyecto"
+  }
+}
