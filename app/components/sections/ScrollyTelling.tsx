@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { useScroll, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { useScroll } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { PinnedSequence } from "../scrollytelling/PinnedSequence";
 import { introPhases } from "@/app/lib/scrollytelling.config";
@@ -9,7 +9,20 @@ import { introPhases } from "@/app/lib/scrollytelling.config";
 export function ScrollyTelling() {
   const t = useTranslations("Scrolly");
   const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  // SSR-safe reduced-motion check. framer-motion's useReducedMotion
+  // initializes its useState from prefersReducedMotion.current, which is
+  // `null` on the server and the actual boolean on the client — that caused
+  // a React #418 hydration mismatch for users with the OS reduce-motion
+  // preference on. We mirror the preference ourselves, post-mount.
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setReduced(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: ref,

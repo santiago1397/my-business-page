@@ -1,46 +1,80 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useScroll,
   useTransform,
-  useReducedMotion,
   type MotionValue,
 } from "framer-motion";
 import { useTranslations } from "next-intl";
 
-type Phase = {
-  /** Scroll range [start, end] within the section (0–1). */
-  range: [number, number];
-  render: (p: MotionValue<number>) => React.ReactNode;
+type PhaseMotionValues = {
+  opacity: MotionValue<number>;
+  y: MotionValue<number>;
+  scale: MotionValue<number>;
+  filter: MotionValue<string>;
 };
 
-/**
- * Fade-in over the start of the range, hold visible all the way to `end`,
- * and only fade out across [end, end + fadeOutSpan]. When `fadeOutSpan` is 0,
- * the panel never fades out (useful for the final phrase).
- */
-function usePanelOpacity(
+// All phase motion values are computed via this hook at the top of the
+// component, in a fixed order. Calling useTransform inside a map/callback
+// would violate the Rules of Hooks (the order must be deterministic across
+// renders), so each phase's transforms are extracted here.
+function usePhaseMotionValues(
   progress: MotionValue<number>,
-  [start, end]: [number, number],
-  fadeOutSpan = 0.04
-) {
-  const fadeIn = Math.min(0.04, (end - start) * 0.4);
-  if (fadeOutSpan <= 0) {
-    return useTransform(progress, [start, start + fadeIn], [0, 1]);
-  }
-  return useTransform(
+  range: [number, number],
+  fadeOutSpan: number,
+  intro?: "welcome",
+): PhaseMotionValues {
+  const [s, e] = range;
+  const mid = s + (e - s) * 0.25;
+  const fadeIn = Math.min(0.04, (e - s) * 0.4);
+  const isWelcome = intro === "welcome";
+
+  const opacity = useTransform(
     progress,
-    [start, start + fadeIn, end, end + fadeOutSpan],
-    [0, 1, 1, 0]
+    fadeOutSpan > 0
+      ? [s, s + fadeIn, e, e + fadeOutSpan]
+      : [s, s + fadeIn],
+    fadeOutSpan > 0 ? [0, 1, 1, 0] : [0, 1],
   );
+  const y = useTransform(
+    progress,
+    [s, mid],
+    isWelcome ? [0, 0] : [40, 0],
+  );
+  const scale = useTransform(
+    progress,
+    [s, mid],
+    isWelcome ? [3, 1] : [0.95, 1],
+  );
+  const blur = useTransform(
+    progress,
+    [s, mid],
+    isWelcome ? [12, 0] : [0, 0],
+  );
+  const filter = useTransform(blur, (b) => `blur(${b}px)`);
+
+  return { opacity, y, scale, filter };
 }
 
 export function BrowserSequence() {
   const t = useTranslations("BrowserSequence");
   const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  // SSR-safe reduced-motion check. We deliberately avoid framer-motion's
+  // useReducedMotion: its internal `useState(prefersReducedMotion.current)`
+  // initializer is `null` on the server and the actual value on the client,
+  // which produced a React #418 hydration mismatch for users with the OS
+  // "reduce motion" preference on.
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setReduced(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -49,93 +83,16 @@ export function BrowserSequence() {
 
   const frameY = useTransform(scrollYProgress, [0, 0.18], [120, 0]);
   const frameScale = useTransform(scrollYProgress, [0, 0.18], [0.78, 1]);
-
-  // Background image: starts slightly smaller (visible mountain margin) and
-  // grows to full cover as the user scrolls into the section — parallax zoom.
   const bgScale = useTransform(scrollYProgress, [0, 0.1875], [0.92, 1.08]);
 
-  // Phase ranges spread across the scroll (after the intro slide-up).
-  const phases: Phase[] = [
-    {
-      range: [0.08, 0.22],
-      render: (p) => (
-        <PhaseText
-          opacity={usePanelOpacity(p, [0.08, 0.22])}
-          progress={p}
-          range={[0.08, 0.22]}
-          intro="welcome"
-          className="text-4xl md:text-6xl lg:text-6xl font-normal tracking-tight text-zinc-100"
-        >
-          {t("welcome")}
-        </PhaseText>
-      ),
-    },
-    {
-      range: [0.22, 0.36],
-      render: (p) => (
-        <PhaseText
-          opacity={usePanelOpacity(p, [0.22, 0.36])}
-          progress={p}
-          range={[0.22, 0.36]}
-          className="text-3xl md:text-5xl lg:text-6xl font-mono text-zinc-100"
-          style={{ letterSpacing: "0.1em" }}
-        >
-          {t("brand")}
-        </PhaseText>
-      ),
-    },
-    {
-      range: [0.36, 0.5],
-      render: (p) => (
-        <PhaseText
-          opacity={usePanelOpacity(p, [0.36, 0.5])}
-          progress={p}
-          range={[0.36, 0.5]}
-          className="text-2xl md:text-3xl lg:text-4xl font-normal tracking-tight text-zinc-500"
-        >
-          {t("teamFor")}
-        </PhaseText>
-      ),
-    },
-    {
-      range: [0.5, 0.66],
-      render: (p) => (
-        <SnakeDesigners opacity={usePanelOpacity(p, [0.5, 0.66])} text={t("snakeText")} />
-      ),
-    },
-    {
-      range: [0.66, 0.82],
-      render: (p) => (
-        <PhaseText
-          opacity={usePanelOpacity(p, [0.66, 0.82])}
-          progress={p}
-          range={[0.66, 0.82]}
-          className="text-xl md:text-2xl lg:text-3xl font-normal tracking-tight text-zinc-100"
-        >
-          {t.rich("andBuilders", {
-            accent: (chunks) => (
-              <span className="font-pixel-square" style={{ opacity: 0.4 }}>
-                {chunks}
-              </span>
-            ),
-          })}
-        </PhaseText>
-      ),
-    },
-    {
-      range: [0.82, 1.0],
-      render: (p) => (
-        <PhaseText
-          opacity={usePanelOpacity(p, [0.82, 1.0], 0)}
-          progress={p}
-          range={[0.82, 1.0]}
-          className="text-xl md:text-3xl lg:text-4xl font-normal tracking-tight text-white"
-        >
-          {t("weAllShare")}
-        </PhaseText>
-      ),
-    },
-  ];
+  // Pre-compute all six phase motion values at the top, in declaration order,
+  // so the hook list stays stable across renders.
+  const p1 = usePhaseMotionValues(scrollYProgress, [0.08, 0.22], 0.04, "welcome");
+  const p2 = usePhaseMotionValues(scrollYProgress, [0.22, 0.36], 0.04);
+  const p3 = usePhaseMotionValues(scrollYProgress, [0.36, 0.5], 0.04);
+  const p4 = usePhaseMotionValues(scrollYProgress, [0.5, 0.66], 0.04);
+  const p5 = usePhaseMotionValues(scrollYProgress, [0.66, 0.82], 0.04);
+  const p6 = usePhaseMotionValues(scrollYProgress, [0.82, 1.0], 0);
 
   if (reduced) {
     return (
@@ -154,8 +111,6 @@ export function BrowserSequence() {
     >
       {/* Sticky stage */}
       <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Mountain background — stays positionally static, but scales up
-            slightly as the user scrolls into the section (parallax zoom). */}
         <motion.div
           style={{
             scale: bgScale,
@@ -166,7 +121,6 @@ export function BrowserSequence() {
           }}
           className="absolute inset-0"
         />
-        {/* Browser frame */}
         <motion.div
           style={{
             y: frameY,
@@ -176,7 +130,6 @@ export function BrowserSequence() {
           className="relative flex h-full w-full items-center justify-center px-4 py-8 lg:px-6"
         >
           <div className="w-full max-w-7xl border border-zinc-800 bg-zinc-950 rounded-sm overflow-hidden shadow-2xl">
-            {/* Title bar */}
             <div className="flex h-10 items-center justify-between border-b border-zinc-800 bg-zinc-900 px-4">
               <div className="flex items-center gap-2">
                 <span className="h-3 w-3 rounded-full bg-zinc-600" />
@@ -189,18 +142,30 @@ export function BrowserSequence() {
               <div className="w-16" />
             </div>
 
-            {/* Stage area */}
             <div className="relative h-[420px] lg:h-[560px] bg-zinc-950 overflow-hidden">
-              {phases.map((phase, i) => (
-                <div
-                  key={i}
-                  className="absolute inset-0 flex items-center justify-center px-6 md:px-12"
-                >
-                  {phase.render(scrollYProgress)}
-                </div>
-              ))}
+              <PhaseShell mv={p1} className="text-4xl md:text-6xl lg:text-6xl font-normal tracking-tight text-zinc-100">
+                {t("welcome")}
+              </PhaseShell>
+              <PhaseShell mv={p2} className="text-3xl md:text-5xl lg:text-6xl font-mono text-zinc-100" style={{ letterSpacing: "0.1em" }}>
+                {t("brand")}
+              </PhaseShell>
+              <PhaseShell mv={p3} className="text-2xl md:text-3xl lg:text-4xl font-normal tracking-tight text-zinc-500">
+                {t("teamFor")}
+              </PhaseShell>
+              <SnakeDesigners opacity={p4.opacity} text={t("snakeText")} />
+              <PhaseShell mv={p5} className="text-xl md:text-2xl lg:text-3xl font-normal tracking-tight text-zinc-100">
+                {t.rich("andBuilders", {
+                  accent: (chunks) => (
+                    <span className="font-pixel-square" style={{ opacity: 0.4 }}>
+                      {chunks}
+                    </span>
+                  ),
+                })}
+              </PhaseShell>
+              <PhaseShell mv={p6} className="text-xl md:text-3xl lg:text-4xl font-normal tracking-tight text-white">
+                {t("weAllShare")}
+              </PhaseShell>
 
-              {/* Keep scrolling hint — fades out once we're past the intro */}
               <KeepScrolling progress={scrollYProgress} label={t("keepScrolling")} />
             </div>
           </div>
@@ -210,50 +175,28 @@ export function BrowserSequence() {
   );
 }
 
-/* ---------- Phase pieces ---------- */
-
-function PhaseText({
+function PhaseShell({
+  mv,
   children,
-  opacity,
-  progress,
-  range,
   className,
   style,
-  intro,
 }: {
+  mv: PhaseMotionValues;
   children: React.ReactNode;
-  opacity: MotionValue<number>;
-  progress: MotionValue<number>;
-  range: [number, number];
   className?: string;
   style?: React.CSSProperties;
-  /** "welcome" gets the zoom-in-from-3x blurred entrance from the reference. */
-  intro?: "welcome";
 }) {
-  const [s, e] = range;
-  const mid = s + (e - s) * 0.25;
-
-  // Most phases: enter from y=28-40 + scale 0.95 → settle.
-  const y = useTransform(progress, [s, mid], intro === "welcome" ? [0, 0] : [40, 0]);
-  const scale = useTransform(
-    progress,
-    [s, mid],
-    intro === "welcome" ? [3, 1] : [0.95, 1]
-  );
-  const blur = useTransform(progress, [s, mid], intro === "welcome" ? [12, 0] : [0, 0]);
-  const filter = useTransform(blur, (b) => `blur(${b}px)`);
-
   return (
     <motion.p
       style={{
-        opacity,
-        y,
-        scale,
-        filter,
+        opacity: mv.opacity,
+        y: mv.y,
+        scale: mv.scale,
+        filter: mv.filter,
         willChange: "transform, opacity, filter",
         ...style,
       }}
-      className={`text-center leading-[1.1] max-w-4xl whitespace-pre-line ${className ?? ""}`}
+      className={`absolute inset-0 flex items-center justify-center px-6 md:px-12 text-center leading-[1.1] max-w-4xl m-auto whitespace-pre-line ${className ?? ""}`}
     >
       {children}
     </motion.p>

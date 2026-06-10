@@ -47,6 +47,7 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${pixelSquare.variable} ${pixelGrid.variable} ${pixelCircle.variable} ${pixelTriangle.variable} ${pixelLine.variable}`}
     >
       <head>

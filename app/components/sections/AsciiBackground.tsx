@@ -11,89 +11,122 @@ export function AsciiBackground() {
     const stage = stageRef.current;
     if (!stage) return;
 
-    const width = stage.clientWidth;
-    const height = stage.clientHeight;
-
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
-
-    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
-    camera.position.set(0, 0, 4);
-
-    const renderer = new THREE.WebGLRenderer({ alpha: false, antialias: true });
-    renderer.setClearColor(0x000000, 1);
-    renderer.setSize(width, height);
-
-    const effect = new AsciiEffect(renderer, " .:-=+*#%@", {
-      invert: true,
-      resolution: 0.18,
-      scale: 1,
-    });
-    effect.setSize(width, height);
-    effect.domElement.style.position = "absolute";
-    effect.domElement.style.inset = "0";
-    effect.domElement.style.color = "rgb(63, 63, 70)";
-    effect.domElement.style.backgroundColor = "transparent";
-    effect.domElement.style.pointerEvents = "none";
-    stage.appendChild(effect.domElement);
-
-    // AsciiEffect's wrapper contains the WebGL canvas — force it hidden so only
-    // the ASCII table overlay is visible.
-    const innerCanvas = effect.domElement.querySelector("canvas");
-    if (innerCanvas) {
-      innerCanvas.style.display = "none";
-    }
-
-    const geometry = new THREE.TorusKnotGeometry(0.9, 0.32, 160, 24);
-    const material = new THREE.MeshPhongMaterial({
-      color: 0xffffff,
-      flatShading: true,
-      shininess: 20,
-    });
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-
-    scene.add(new THREE.AmbientLight(0xffffff, 0.15));
-
-    const point = new THREE.PointLight(0xffffff, 2.0);
-    point.position.set(5, 5, 5);
-    scene.add(point);
-
-    const point2 = new THREE.PointLight(0xffffff, 1.0);
-    point2.position.set(-5, -3, 4);
-    scene.add(point2);
-
-    let rafId = 0;
-    const start = performance.now();
-    const animate = () => {
-      const t = (performance.now() - start) / 1000;
-      mesh.rotation.x = t * 0.25;
-      mesh.rotation.y = t * 0.35;
-      effect.render(scene, camera);
-      rafId = requestAnimationFrame(animate);
+    // The parent is `hidden dark:flex`, so the stage is 0x0 in light mode.
+    // Initializing a THREE.WebGLRenderer at 0x0 leaves its canvas empty and
+    // AsciiEffect's drawImage throws. Defer initialization until the stage
+    // actually has a size, and re-init if the parent becomes visible later.
+    type SceneHandle = {
+      dispose: () => void;
     };
-    animate();
+    let active: SceneHandle | null = null;
+    let ro: ResizeObserver | null = null;
 
-    const handleResize = () => {
-      const w = stage.clientWidth;
-      const h = stage.clientHeight;
-      if (!w || !h) return;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
-      effect.setSize(w, h);
+    const initScene = (): SceneHandle | null => {
+      const width = stage.clientWidth;
+      const height = stage.clientHeight;
+      if (!width || !height) return null;
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x000000);
+
+      const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
+      camera.position.set(0, 0, 4);
+
+      const renderer = new THREE.WebGLRenderer({ alpha: false, antialias: true });
+      renderer.setClearColor(0x000000, 1);
+      renderer.setSize(width, height);
+
+      const effect = new AsciiEffect(renderer, " .:-=+*#%@", {
+        invert: true,
+        resolution: 0.18,
+        scale: 1,
+      });
+      effect.setSize(width, height);
+      effect.domElement.style.position = "absolute";
+      effect.domElement.style.inset = "0";
+      effect.domElement.style.color = "rgb(63, 63, 70)";
+      effect.domElement.style.backgroundColor = "transparent";
+      effect.domElement.style.pointerEvents = "none";
+      stage.appendChild(effect.domElement);
+
+      // AsciiEffect's wrapper contains the WebGL canvas — force it hidden so only
+      // the ASCII table overlay is visible.
+      const innerCanvas = effect.domElement.querySelector("canvas");
+      if (innerCanvas) {
+        innerCanvas.style.display = "none";
+      }
+
+      const geometry = new THREE.TorusKnotGeometry(0.9, 0.32, 160, 24);
+      const material = new THREE.MeshPhongMaterial({
+        color: 0xffffff,
+        flatShading: true,
+        shininess: 20,
+      });
+      const mesh = new THREE.Mesh(geometry, material);
+      scene.add(mesh);
+
+      scene.add(new THREE.AmbientLight(0xffffff, 0.15));
+
+      const point = new THREE.PointLight(0xffffff, 2.0);
+      point.position.set(5, 5, 5);
+      scene.add(point);
+
+      const point2 = new THREE.PointLight(0xffffff, 1.0);
+      point2.position.set(-5, -3, 4);
+      scene.add(point2);
+
+      let rafId = 0;
+      const start = performance.now();
+      const animate = () => {
+        const t = (performance.now() - start) / 1000;
+        mesh.rotation.x = t * 0.25;
+        mesh.rotation.y = t * 0.35;
+        effect.render(scene, camera);
+        rafId = requestAnimationFrame(animate);
+      };
+      animate();
+
+      const handleResize = () => {
+        const w = stage.clientWidth;
+        const h = stage.clientHeight;
+        if (!w || !h) return;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+        effect.setSize(w, h);
+      };
+      window.addEventListener("resize", handleResize);
+
+      return {
+        dispose: () => {
+          cancelAnimationFrame(rafId);
+          window.removeEventListener("resize", handleResize);
+          if (effect.domElement.parentNode === stage) {
+            stage.removeChild(effect.domElement);
+          }
+          geometry.dispose();
+          material.dispose();
+          renderer.dispose();
+        },
+      };
     };
-    window.addEventListener("resize", handleResize);
+
+    // First try: stage may already be visible.
+    active = initScene();
+
+    // Watch for the stage becoming visible (e.g. theme switch to dark) and
+    // re-create the scene then. The ResizeObserver fires once on attach with
+    // the current size, so this also covers the initial measurement.
+    ro = new ResizeObserver(() => {
+      if (active) return; // already initialized
+      active = initScene();
+    });
+    ro.observe(stage);
 
     return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener("resize", handleResize);
-      if (effect.domElement.parentNode === stage) {
-        stage.removeChild(effect.domElement);
-      }
-      geometry.dispose();
-      material.dispose();
-      renderer.dispose();
+      ro?.disconnect();
+      active?.dispose();
+      active = null;
     };
   }, []);
 
